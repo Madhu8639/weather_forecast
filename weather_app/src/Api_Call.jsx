@@ -38,7 +38,7 @@ const MyComponent = (props) => {
         })
     }
     else{
-      axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${import.meta.env.VITE_API_KEY}`)
+      axios.get(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${import.meta.env.VITE_API_KEY}`)
       .then(response => {
         const locationData = response.data[0];
         if (locationData) {
