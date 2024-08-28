@@ -4,7 +4,9 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import MyComponent from './Api_Call'
 import Icon from './Icon'
-import main from "./assets/logo.png"
+import main from "./assets/weather.gif"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const [city, setcity] =useState("")
@@ -44,18 +46,18 @@ function App() {
   return (
     <>
       <div className='flex flex-col items-center h-screen w-full justify-center   ' >
-      <div>
+      {/* <div>
         <img className='h-[200px]' src={main} alt="" />
-      </div>
+      </div> */}
       <div className='mb-[30px] '>
         <form action="">
          <div className='flex flex-col justify-center items-center gap-9'>
-          <div className='bg-white flex items-center p-[5px] space-x-1 rounded-[10px] md:w-[500px] '>
-          <input onChange={handleChange} className=' rounded-[10px] h-[50px] w-[250px] md:w-full bg-transparent focus:border-none ' type="text" placeholder='please enter the location' name='location' />
+          <div className='bg-gray-400  bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 border border-gray-100  flex items-center p-[5px] space-x-1 rounded-[10px] md:w-[500px] '>
+          <input onChange={handleChange} className=' rounded-[10px] h-[50px] w-[250px] md:w-full bg-transparent focus:border-none ' type="text" placeholder='please enter the location' name='location' value={temp} />
           <button onClick={handleSubmit} className=''>submit</button>
           </div>
           <div>
-          <button onClick={handlegeo} className=''>Use Current Location</button>
+          <button onClick={handlegeo} className=' border-2 border-black p-2 rounded-md'> <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2" /> Use Current Location</button>
           </div>
           </div>
           
@@ -63,7 +65,7 @@ function App() {
         </div>
         <div>
         
-        {city !== "" ? <MyComponent city = {city} />  : (check? <MyComponent lat = {lat} long = {long} check = {check} /> :<h1>no data</h1>) }
+        {city !== "" ? <MyComponent city = {city} />  : (check? <MyComponent lat = {lat} long = {long} check = {check}  /> :<h1>no data</h1>) }
         </div>
       </div>
     </>
