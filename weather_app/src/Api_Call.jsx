@@ -56,7 +56,7 @@ const MyComponent = (props) => {
         setAnalysis(weatherResponse.data);
         localStorage.setItem(city, JSON.stringify(weatherResponse.data));
         setLoading(false);
-        console.log(analysis.wind)
+        console.log(analysis)
       })
       .catch(error => {
         setErr(true)
@@ -66,6 +66,7 @@ const MyComponent = (props) => {
     }
     
   }
+  console.log(analysis.name)
   }, [city]);
 
   if (loading) {
@@ -79,12 +80,14 @@ const MyComponent = (props) => {
   }
   return (
     <div  >
+    <p >City : {analysis.name}</p>
       {analysis.main && (
         <div className='grid grid-cols-2 gap-4 md:flex md:gap-3'>
           {/* <p>Temperature: {}</p>
           <p>Weather: {}</p>
           <p>Humidity: </p>
           <p>Wind Speed:  m/s</p> */}
+          
           <Icon image = {hot} val = {`${Math.round(analysis.main.temp-273.15)}°C`}/>
           <Icon image = {drop} val={`${analysis.main.humidity}%`} />
           <Icon image = {wind} val = {`${analysis.wind.speed}KMPH`}  />
