@@ -36,7 +36,9 @@ The RT Weather App is a responsive web application that provides real-time weath
   
 ## Screenshots
 
-- ![RT Weather App Screenshot](assets/s1.png)
+- ![RT Weather App Screenshot](weather_app/src/assets/s1_laptop.png)
+- ![RT Weather App Screenshot](weather_app/src/assets/s2_tab.png)
+- ![RT Weather App Screenshot](weather_app/src/assets/s3_mobile.jpg)
 
 
    
