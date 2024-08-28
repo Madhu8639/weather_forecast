@@ -13,6 +13,7 @@ const MyComponent = (props) => {
   const [lat,setLat] = useState(0)
   const [analysis,setAnalysis] = useState([])
   const city = props.city
+  const check = props.check
   const [err,setErr] = useState(false)
   useEffect(() => {
     setLoading(true)
@@ -24,10 +25,9 @@ const MyComponent = (props) => {
     }
     else{
     if (props.check===true){
-      axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${props.lat}&lon=${props.long}&appid=${import.meta.env.VITE_API_KEY}`)
+      axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${props.lat}&lon=${props.lon}&appid=${import.meta.env.VITE_API_KEY}`)
         .then(response =>{
           setAnalysis(response.data)
-          localStorage.setItem(`${props.lat},${props.lon}`, JSON.stringify(response.data));
           setLoading(false)
           console.log(analysis)
         })
@@ -66,8 +66,8 @@ const MyComponent = (props) => {
     }
     
   }
-  console.log(analysis.name)
-  }, [city]);
+  console.log(analysis)
+  }, [props.city,props.check,props.lat,props.lon]);
 
   if (loading) {
     return <p>Loading...</p>;

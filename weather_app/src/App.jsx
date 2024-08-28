@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
-  const [city, setcity] =useState("")
+  const [city, setCity] =useState("")
   const [temp,settemp] = useState("")
   const [check, setCheck] = useState(false)
   const [lat,setLat] = useState(0)
@@ -25,10 +25,13 @@ function App() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
           (position) => {
+            
               setLat(position.coords.latitude)
               setLong(position.coords.longitude)
               console.log(lat,long)
+              setCity("")
               setCheck(true)
+              
           },
           (error) => {
               setError(error.message);
@@ -40,7 +43,7 @@ function App() {
   }
 
   const handleSubmit = (event) => {
-    setcity(temp)
+    setCity(temp)
     event.preventDefault();
   };
   return (
@@ -66,7 +69,7 @@ function App() {
         </div>
         <div>
         
-        {city !== "" ? <MyComponent city = {city} />  : (check? <MyComponent lat = {lat} long = {long} check = {check}  /> :<h1>no data</h1>) }
+        {city !== "" ? <MyComponent city = {city} check ={check} />  : (check? <MyComponent city={city} lat = {lat} lon = {long} check = {check}  /> :<h1>no data</h1>) }
         </div>
       </div>
     </>
