@@ -24,7 +24,7 @@ const MyComponent = (props) => {
     }
     else{
     if (props.check===true){
-      axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${props.lat}&lon=${props.long}&appid=693a2fbe55f5349f29c7fa6a465caff7`)
+      axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${props.lat}&lon=${props.long}&appid=${import.meta.env.VITE_API_KEY}`)
         .then(response =>{
           setAnalysis(response.data)
           localStorage.setItem(`${props.lat},${props.lon}`, JSON.stringify(response.data));
