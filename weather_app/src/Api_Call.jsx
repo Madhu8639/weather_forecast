@@ -16,57 +16,57 @@ const MyComponent = (props) => {
   const check = props.check
   const [err,setErr] = useState(false)
   useEffect(() => {
-    setLoading(true)
-    setErr(false)
-    const cachedData = localStorage.getItem(city);
-    if (cachedData){
-      setAnalysis(JSON.parse(cachedData))
-      setLoading(false)
-    }
-    else{
-    if (props.check===true){
-      axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${props.lat}&lon=${props.lon}&appid=${import.meta.env.VITE_API_KEY}`)
-        .then(response =>{
-          setAnalysis(response.data)
-          setLoading(false)
-          console.log(analysis)
-        })
-        .catch(err =>{
-          setErr(true)
-        console.error('Error fetching data:', err);
-        setLoading(false);
-        })
-    }
-    else{
-      axios.get(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${import.meta.env.VITE_API_KEY}`)
-      .then(response => {
-        const locationData = response.data[0];
-        if (locationData) {
-          setLon(locationData.lon);
-          setLat(locationData.lat);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setErr(false);
 
-          // Now fetch weather data using the lat and lon
-          return axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${locationData.lat}&lon=${locationData.lon}&appid=${import.meta.env.VITE_API_KEY}`);
-        } else {
-          setErr(True)
-          throw new Error('Location data not found');
+        const cachedData = localStorage.getItem(city);
+        if (cachedData) {
+          setAnalysis(JSON.parse(cachedData));
+          setLoading(false);
+          return;
         }
-      })
-      .then(weatherResponse => {
-        setAnalysis(weatherResponse.data);
-        localStorage.setItem(city, JSON.stringify(weatherResponse.data));
-        setLoading(false);
-        console.log(analysis)
-      })
-      .catch(error => {
-        setErr(true)
+
+        if (check === true) {
+          const weatherResponse = await axios.get(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${props.lat}&lon=${props.lon}&appid=${import.meta.env.VITE_API_KEY}`
+          );
+          setAnalysis(weatherResponse.data);
+          setLoading(false);
+          console.log(analysis);
+        } else {
+          const locationResponse = await axios.get(
+            `https://api.opencagedata.com/geocode/v1/json?q=${city}&key=${import.meta.env.VITE_CITY_API_KEY}`
+          );
+
+          console.log("OpenCage API Response:", locationResponse.data);
+
+          if (locationResponse.data && locationResponse.data.results && locationResponse.data.results.length > 0) {
+            const locationData = locationResponse.data.results[0];
+            setLon(locationData.geometry.lng);
+            setLat(locationData.geometry.lat);
+
+            // Now fetch weather data using the lat and lon
+            const weatherResponse = await axios.get(
+              `https://api.openweathermap.org/data/2.5/weather?lat=${locationData.geometry.lat}&lon=${locationData.geometry.lng}&appid=${import.meta.env.VITE_API_KEY}`
+            );
+            setAnalysis(weatherResponse.data);
+            localStorage.setItem(city, JSON.stringify(weatherResponse.data));
+            setLoading(false);
+          } else {
+            setErr(true);
+            throw new Error('Location data not found');
+          }
+        }
+      } catch (error) {
+        setErr(true);
         console.error('Error fetching data:', error);
         setLoading(false);
-      });
-    }
-    
-  }
-  console.log(analysis)
+      }
+    };
+
+    fetchData();
   }, [props.city,props.check,props.lat,props.lon]);
 
   if (loading) {
